@@ -1,3 +1,4 @@
+
 # class 5 R graphics and plots 
 #?read.table
 weight <- read.table("bimm143_05_rstats/weight_chart.txt", header = T)
