@@ -2,7 +2,7 @@
 title: "Day07:Functions and packages"
 author: "Tiani Louis"
 date: "4/24/2019"
-output: html_document
+output: github_document 
 ---
 
 
@@ -47,8 +47,8 @@ sum( is.na(x) & is.na(y))
 Take this and use it as the body of the function 
 ```{r}
 both_na <- function(x,y) {
-  if(length(x) != length(y)) {
- stop("UHHHH, They really should be the same length")
+if(length(x) != length(y)) {
+stop("UHHHH, They really should be the same length")
  }
 sum( is.na(x) & is.na(y))  
 }
