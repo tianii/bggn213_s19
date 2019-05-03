@@ -2,7 +2,7 @@
 title: 'Class 06: R Functions'
 author: "Tiani Louis"
 date: "4/19/2019"
-output: html_document
+output: github_document 
 ---
 
 ```{r setup, include=FALSE}
