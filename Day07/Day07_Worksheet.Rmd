@@ -64,7 +64,7 @@ both_na(c(NA,NA,NA), c(1,NA,NA))
 ```
 These are different lengths and this code should throw an error > R will recycle the length of the first vector to produce an answer
 ```{r}
-both_na(c(NA,NA,NA), c(1,NA,NA,NA))
+# both_na(c(NA,NA,NA), c(1,NA,NA,NA))
 ```
 Check the length of the vectors using length()
 ```{r}
@@ -147,7 +147,7 @@ grade <-function(x) {
 grade(s_2)
 ```
 ```{r}
-student_homework <- read.csv("~/Desktop/BGGN213/Day07/student_homework.csv")
+# student_homework <- read.csv("~/Desktop/BGGN213/Day07/student_homework.csv")
 ```
 
 ```{r}
@@ -196,6 +196,6 @@ merge(df1, df2, by="IDs")
 
 
 ```{r}
-ggplot(df1, aes( x = IDs)) + geom_path(aes(y = exp), color="red")
+# ggplot(df1, aes( x = IDs)) + geom_path(aes(y = exp), color="red")
 
 ```
