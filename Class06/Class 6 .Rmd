@@ -1,0 +1,104 @@
+---
+title: 'Class 06: R Functions'
+author: "Tiani Louis"
+date: "4/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Today we are learning about **R functions** n stuff
+```{r}
+plot(1:10, typ="l", col="blue")
+```
+
+```{r}
+read.csv("test1.txt", header = T)
+read.table("test2.txt", header = T, sep="$")
+read.table("test3.txt")
+```
+## We out here tryin' ta FUNCTION 
+```{r}
+add <- function(x, y=1) {
+ # Sum the input x and y
+ x + y
+}
+```
+
+```{r}
+add(4, y=5)
+```
+```{r}
+add(c(1,3,5))
+```
+
+```{r}
+add(4)
+```
+
+```{r}
+rescale <- function(x) {
+ rng <-range(x)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
+```{r}
+rescale(1:10)
+```
+```{r}
+rescale(c(1, 3, NA, 5, 10))
+```
+```{r}
+
+ x <- c(1, 3, NA, 5, 10)
+  rng <-range(x, na.rm = T)
+  rng
+ (x - rng[1]) / (rng[2] - rng[1])
+
+```
+
+```{r}
+rescale2 <- function(x, na.rm = T) {
+ rng <-range(x, na.rm = na.rm)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+
+rescale2(x)
+```
+
+```{r}
+rescale2(c(1, 3, NA, 5, 10))
+```
+```{r}
+rescale3 <- function(x, na.rm=TRUE, plot=FALSE) {
+ if(na.rm) {
+ rng <-range(x, na.rm=TRUE)
+ } else {
+ rng <-range(x)
+ }
+ print("Hello")
+ answer <- (x - rng[1]) / (rng[2] - rng[1])
+
+ 
+ print("is it me you are looking for?")
+ if(plot) {
+ plot(answer, typ="b", lwd=4)
+   print("Don't sing please!!!")
+
+ }
+ print("I can see it in ...")
+ return(answer)
+}
+```
+
+```{r}
+rescale3(1:10)
+```
+
+```{r}
+rescale3(1:10, plot = T)
+```
+

@@ -1,0 +1,200 @@
+---
+title: "Day07:Functions and packages"
+author: "Tiani Louis"
+date: "4/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## More on function writing 
+```{r}
+source("http://tinyurl.com/rescale-R")
+```
+
+Test the *rescale()* function
+```{r}
+rescale(1:10)
+```
+
+```{r}
+x <- c(1:10, "string")
+!is.numeric(x)
+```
+## Function practice
+Write a function to identify NA elements in two vectors
+Start with a simple example where I know what the answer should be 
+```{r}
+x <- c( 1, 2, NA, 3, NA)
+y <- c(NA, 3, NA, 3, 4)
+```
+```{r}
+is.na(x)
+is.na(y)
+```
+# this will tell you when both x and y are NA
+
+```{r}
+is.na(x) & is.na(y)
+```
+Take the sum to find how many 
+```{r}
+sum( is.na(x) & is.na(y))
+```
+
+Take this and use it as the body of the function 
+```{r}
+both_na <- function(x,y) {
+  if(length(x) != length(y)) {
+ stop("UHHHH, They really should be the same length")
+ }
+sum( is.na(x) & is.na(y))  
+}
+```
+
+TEST IT!
+```{r}
+both_na(x,y)
+```
+```{r}
+both_na(c(NA,NA,NA), c(1,NA,NA))
+
+```
+These are different lengths and this code should throw an error > R will recycle the length of the first vector to produce an answer
+```{r}
+both_na(c(NA,NA,NA), c(1,NA,NA,NA))
+```
+Check the length of the vectors using length()
+```{r}
+length(x) == length(y)
+```
+Add some cute extras!
+
+```{r}
+x <- c( 1, 2, NA, 3, NA)
+y <- c(NA, 3, NA, 3, 4)
+
+both_na <- function(x,y) {
+  if(length(x) != length(y)) {
+ stop("UHHHH, They really should be the same length")
+ }
+sum( is.na(x) & is.na(y))  
+}
+
+both_na(x,y)
+```
+```{r}
+# student 1
+s_1 <- c(100,100,100,100,100,100,100,90)
+
+#student 2
+s_2 <- c(100, NA, 90, 90,90,90, 97, 80)
+```
+
+```{r}
+grade <- function(x) {
+  min_g <- min(x)
+ sum_g <- sum(x) - min_g
+ average <- sum_g/(length(x)-1)
+return(average)
+}
+```
+
+```{r}
+grade(s_1)
+grade(s_2)
+```
+```{r}
+grade2 <- function(x) {
+  min_g <- min(x)
+ average <- mean(x, na.rm =T)
+return(average)
+}
+```
+
+
+```{r}
+grade2(s_2)
+
+```
+```{r}
+grade3 <- function(x) {
+  min_g <- min(x)
+  sum_g <- sum(x) - min_g
+  average <- sum_g/(length(x)-1)
+  if (is.na(x)) {
+  min_g <- min(x)
+ average2 <- mean(x, na.rm =T)
+return(average2)
+  }
+ 
+}
+```
+
+```{r}
+grade3(s_2)
+```
+```{r}
+grade <-function(x) {
+  (sum(x, na.rm=T) - min(x, na.rm=T))/(length(x)-1)
+}
+```
+
+
+```{r}
+grade(s_2)
+```
+```{r}
+student_homework <- read.csv("~/Desktop/BGGN213/Day07/student_homework.csv")
+```
+
+```{r}
+url <- "https://tinyurl.com/gradeinput"
+students <- read.csv(url, row.names = 1)
+head(students)
+```
+```{r}
+grade(students[5,])
+```
+```{r}
+ans <- apply(students, 1, grade)
+```
+
+```{r}
+sort(ans, decreasing =T)
+```
+The function to end all functions 
+find the intersection of two samples
+```{r}
+x <- df1$IDs
+y <- df2$IDs
+z <- df3$IDs
+intersect(x,y)
+
+
+```
+```{r}
+x
+y
+z
+
+ x[x %in% z]
+```
+column bind cbind() row bind rbind()
+%in% finds the common elements between two vectors 
+```{r}
+gene_intersect <- function(x, y) {
+  cbind(x[x %in% y], y[y %in% x])
+}
+```
+
+```{r}
+merge(df1, df2, by="IDs")
+```
+
+
+```{r}
+ggplot(df1, aes( x = IDs)) + geom_path(aes(y = exp), color="red")
+
+```

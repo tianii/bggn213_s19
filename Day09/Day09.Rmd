@@ -1,0 +1,25 @@
+---
+title: "Day09"
+author: "Tiani Louis"
+date: "5/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+wisc.df <- read.csv("WisconsinCancer (1).csv")
+# how many have a malignant diagnosis 
+length(grep("M", wisc.df$diagnosis))
+```
+```{r}
+table(wisc.df$diagnosis)
+```
+```{r}
+# how many features are suffixed with "_mean"?
+colnames(wisc.df)
+length(grep( "_mean", colnames(wisc.df)))
+```
+
