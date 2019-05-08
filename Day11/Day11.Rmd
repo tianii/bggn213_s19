@@ -1,0 +1,60 @@
+---
+title: "Day 11: Structural Bioinformatics (Pt1)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Revisit the PDB 
+
+#**Question 1: Download a CSV file from the PDB site (accessible from “Analyze” -> “PDB Statistics” >
+“by Experimental Method and Molecular Type”. Move this CSV file into your RStudio project
+and determine the percentage of structures solved by X-Ray and Electron Microscopy. Also can
+you determine what proportion of structures are protein? Aim to have a rendered GitHub
+document with working code that yields your answers**
+
+Download a CSV file from: https://www.rcsb.org/stats/summary
+```{r}
+# percent of xray structures 
+db <- read.csv("Data Export Summary.csv", row.names = 1)
+head(db)
+
+sum(db$Total)
+
+rowSums(db)
+(db$Total/sum(db$Total)) * 100 
+
+
+
+# proportion of protein 
+(sum(db$Proteins)/sum(db$Total)) *100
+
+```
+## Percent Xray : 89.35%
+## Percent Electron Microscopy: 2.06%
+## Proportion of Protein : 92.76461%
+
+### **Q2: Type HIV in the PDB website search box on the home page and determine how many
+HIV-1 protease structures are in the current PDB?**
+
+## 1,157 protease structures 
+
+```{r}
+pdb <- read.pdb(file = "1hsg.pdb")
+pdb
+```
+
+```{r}
+pdb$seqres
+```
+```{r}
+ca.ins <- atom.select(pdb, "calpha")
+
+atom.select(pdb, resno = 10)
+
+
+```
+
+
+
