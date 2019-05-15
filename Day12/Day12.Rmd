@@ -1,0 +1,65 @@
+---
+title: "Day 11"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(bio3d)
+library(rgl)
+
+```
+
+```{r}
+hsg <- get.pdb("1hsg")
+```
+```{r}
+hiv <- read.pdb(hsg)
+hiv
+```
+
+**Q1: What is the name of the two non protein resid values in this structure? What does resid
+correspond to and how would you get a listing of all reside values in this structure? **
+
+A1: HOH (127),  MK1(1)
+
+Resid = "residuals"
+```{r}
+#select protein and ligand only 
+prot <- atom.select(hiv, "protein", value = T)
+prot
+write.pdb(prot, file = "1hsg_protein.pdb")
+
+lig <- atom.select(hiv, "ligand", value = T)
+lig
+write.pdb(lig, file = "1hsg_ligand.pdb")
+```
+## Add Hydrogen and charges in ADT 
+
+We opened our pdb in AutdocTools and added hydrogen and atom types for docking calculations 
+## Run docking 
+We will use AutoDoc Vina here at the UNIX command line 
+
+
+## Make a grid box that encompasses the docking area
+```{r}
+res <- read.pdb("all.pdbqt", multi=T)
+res
+```
+
+```{r}
+res <- read.pdb("all.pdbqt", multi=TRUE)
+write.pdb(res, "results.pdb")
+```
+
+```{r}
+# res <- read.pdb("all.pdbqt", multi=TRUE)
+ori <- read.pdb("1hsg_ligand.pdbqt")
+rmsd(ori, res)
+```
+```{r}
+pdb <- read.pdb("1hel")
+modes <- nma( pdb )
+m7 <- mktrj(modes, mode=7, file="mode_7.pdb")
+```
+
