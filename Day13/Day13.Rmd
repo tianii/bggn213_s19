@@ -1,0 +1,89 @@
+---
+title: "Day 13"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+data <- read.csv("~/Desktop/SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv", header = T)
+```
+
+
+```{r}
+head(data)
+```
+```{r}
+table(data)
+```
+
+```{r}
+snp.totals <- table(data$Genotype..forward.strand.)
+
+```
+
+```{r}
+
+# proportion 
+round(table(snp.totals/nrow(data)*100))
+
+
+9/64
+```
+
+```{r}
+butt <- read.table("rs8067378_ENSG00000172057.6.txt")
+```
+```{r}
+summary(butt)
+```
+
+```{r}
+# pull out rows that have G/G
+
+inds <- (butt$geno == "G/G")
+
+summary(butt[inds, ]$exp)
+
+hist(butt[inds,]$exp, col= rainbow(10))
+
+boxplot(butt[inds,]$exp, col= rainbow(10))
+
+# Try a boxplot to show this data
+# y ~ grp 
+
+boxplot(exp ~ geno, data= butt, notch=T, col=rainbow(10))
+#The notches do not overlap, therefore these groups are very likely different 
+
+#ggplots 
+
+library(ggplot2)
+
+ggplot(butt, aes(exp, fill = geno)) + geom_density(alpha = 0.2)
+
+```
+
+```{r}
+# pull out rows that have A/A
+
+inds <- (butt$geno == "A/A")
+
+summary(butt[inds, ]$exp)
+
+
+
+
+```
+
+```{r}
+# pull out rows that have A/G
+
+inds <- (butt$geno == "A/G")
+
+summary(butt[inds, ]$exp)
+
+
+```
+
+
