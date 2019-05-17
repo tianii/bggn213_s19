@@ -1,0 +1,116 @@
+---
+title: "Day 14"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+meta <- read.csv("airway_metadata.csv", stringsAsFactors = F)
+counts <- read.csv("airway_scaledcounts.csv", stringsAsFactors = F)
+
+# stringAsFactors = F keeps R from changing the gene names into factors 
+```
+How many genes are in this dataset?
+```{r}
+head(counts)
+nrow(counts)
+
+```
+
+There are 38,694 genes in the dataset 
+```{r}
+head(meta)
+```
+How many control cell lines are in this dataset? 
+```{r}
+#Check if the colnames of "counts" are the same as id column in 'metadata'
+colnames(counts)
+
+meta$id
+#remove the first column and check to see if the names are equal in both datasets 
+all(colnames(counts)[-1] == meta$id)
+#'all' checks if they are ALL true. If there is one false it would return FALSE
+
+#now, aswer the question, how many control cell lines are there?
+
+table(meta$dex)
+```
+
+Access just the control counts data so we can calculate an average counts value for each gene in these control samples 
+```{r}
+control <- meta[meta[,"dex"]=="control",]
+control
+```
+Now, we want to get the cols in the counts with these 'control$id' colnames 
+```{r}
+# calculates the mean value for every row (gene)
+control.mean <- rowSums(counts[, control$id]/length(control$id))
+head(control.mean)
+# add the names 
+names(control.mean) <- counts$ensgene
+head(control.mean)
+```
+Now, do the same for the treated samples 
+```{r}
+treated <- meta[meta[,"dex"]=="treated",]
+head(treated)
+```
+```{r}
+treated.mean <- rowSums(counts[, treated$id]/length(treated$id))
+head(treated.mean)
+names(treated.mean) <- counts$ensgene
+head(treated.mean)
+```
+
+Combine the control and treated data into a single data frame
+```{r}
+mean.counts <- data.frame(treated.mean, control.mean)
+head(mean.counts)
+```
+Now, plot the means of the control and treated 
+```{r}
+plot(treated.mean ~ control.mean, pch=20, col=rainbow(10), log="xy")
+
+# log = "xy" log transforms the data to spread out the data points 
+```
+
+```{r}
+mean.counts$log2fc <- log2(mean.counts$treated.mean/mean.counts$control.mean)
+head(mean.counts)
+```
+NaN is returned when you divide by 0 and try to take the log. The -INf is returned when you try and take the log of 0. 
+```{r}
+mean.counts[,1:2]==0
+to.rm <- unique(which(mean.counts[,1:2]==0, arr.ind=TRUE)[,1])
+# remove the counts that are NaN or -Inf
+my.counts <- mean.counts[-to.rm, ]
+head(my.counts)
+```
+```{r}
+up.inds <- my.counts$log2fc > 2
+down.inds <- my.counts$log2fc < (-2)
+head(up.inds)
+length(which(up.inds==T))
+length(which(down.inds==T))
+
+sum(up.inds)
+```
+ADD THE ANNODATION DATA!!!!!!!!!!!
+```{r}
+anno <- read.csv("annotables_grch38.csv")
+head(anno)
+```
+
+NOW MERGE THEM!!!!!! USE THE *MERGE* FUNCTION TO COMBINE THE ANNOTATION DATA WITH THE COUNTS DATA!!!!!!!!!
+```{r}
+merge(x=my.counts,  y=anno,  by.x = "row.names", by.y ="ensgene")
+
+```
+
+```{r}
+
+```
+
