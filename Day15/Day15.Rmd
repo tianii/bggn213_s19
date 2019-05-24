@@ -1,0 +1,187 @@
+---
+title: "Day 15: Pathway Analysis from RNA-Seq Results "
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DESeq2)
+library(EnhancedVolcano)
+library(ggplot2)
+library(ggrepel)
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+```
+
+```{r}
+#load in data
+colData <- read.csv("GSE37704_metadata.csv", row.names=1)
+
+countData <- read.csv("GSE37704_featurecounts.csv", row.names=1)
+```
+
+
+```{r}
+# take a peak
+head(colData)
+head(countData)
+```
+```{r}
+countData <- as.matrix(countData[,-1])
+head(countData)
+```
+```{r}
+# Filter count data where you have 0 read count across all samples.
+countData <- countData[which(rowSums(countData) > 0),]
+head(countData)
+nrow(countData)
+```
+
+```{r}
+# Nice now lets setup the DESeqDataSet object required for the DESeq() function and then run the DESeq pipeline. This is again similar to our last days hands-on session.
+dds = DESeqDataSetFromMatrix(countData = countData, 
+                             colData = colData,
+                             design = ~condition)
+dds = DESeq(dds)
+```
+
+```{r}
+dds
+```
+Next, get results for the HoxA1 knockdown versus control siRNA (remember that these were labeled as "hoxa1_kd" and "control_sirna" in our original colData metaFile input to DESeq, you can check this above and by running  resultsNames(dds) command).
+```{r}
+res = results(dds)
+resultsNames(dds)
+```
+
+```{r}
+summary(res)
+```
+VOLCANO PLOT!!!!!
+Now we will make a volcano plot, a commonly produced visualization from this type of data that we introduced last day. Basically it's a plot of log2 fold change vs -log adjusted p-value.
+```{r}
+plot(res$log2FoldChange, -log(res$padj) )
+```
+color by up/down regulated genes 
+```{r}
+# Make a color vector for all genes
+mycols <- rep("light grey", nrow(res))
+# Color red the genes with absolute fold change above 2
+mycols[ abs(res$log2FoldChange) > 2 ] <- "orange"
+
+# Color blue those with adjusted p-value less than 0.01
+#  and absolute fold change more than 2
+inds <- (abs(res$padj) < 0.01) & (abs(res$log2FoldChange) > 2 )
+mycols[ inds ] <- "pink"
+
+plot( res$log2FoldChange, -log(res$padj), col= mycols, xlab="Log2(FoldChange)", ylab="-Log(P-value)", pch=20)
+
+abline(v=c(-2,2), col="red", lty=2)
+abline(h=-log(0.1), col="red", lty=2)
+
+```
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+
+columns(org.Hs.eg.db)
+
+x <- as.data.frame(res) 
+x$symbol <- mapIds(org.Hs.eg.db, 
+                   keys=row.names(x),  ## 1. annotation dataset   ## 5. What to do for multiple matches 
+                   keytype="ENSEMBL",  ## 2. our exisiting IDS
+                   column="SYMBOL",    ## 3. Format of our IDS
+                   multiVals="first")  ## 4. The format we want
+x$entrez = mapIds(org.Hs.eg.db,
+                    keys=row.names(x),
+                    keytype="ENSEMBL",
+                    column="ENTREZID",
+                    multiVals="first")
+x$name =   mapIds(org.Hs.eg.db,
+                    keys=row.names(x),
+                  keytype="ENSEMBL",
+                    column="GENENAME",
+                    multiVals="first")
+head(x, 10)
+
+```
+```{r}
+EnhancedVolcano(x,
+    lab = x$symbol,
+    x = 'log2FoldChange',
+    y = 'pvalue')
+```
+```{r}
+res = res[order(res$pvalue),]
+write.csv(x, file ="deseq_results.csv")
+```
+
+```{r}
+library("pathview")
+library("gage")
+library(gageData)
+```
+
+```{r}
+data(kegg.sets.hs)
+data(sigmet.idx.hs)
+
+# Focus on signaling and metabolic pathways only
+kegg.sets.hs = kegg.sets.hs[sigmet.idx.hs]
+
+# Examine the first 3 pathways
+head(kegg.sets.hs, 3)
+
+```
+The main gage() function requires a named vector of fold changes, where the names of the values are the Entrez gene IDs.
+
+Note that we used the mapIDs() function above to obtain Entrez gene IDs (stored in res$entrez) and we have the fold change results from DESeq2 analysis (stored in res$log2FoldChange).  
+
+```{r}
+foldchanges = x$log2FoldChange
+names(foldchanges) = x$entrez
+head(foldchanges)
+```
+```{r}
+# get the results 
+keggres = gage(foldchanges, gsets = kegg.sets.hs)
+```
+
+```{r}
+attributes(keggres)
+```
+```{r}
+# Look at the first few down (less) pathways
+head(keggres$less)
+
+
+```
+
+```{r}
+pathview(gene.data=foldchanges, pathway.id="hsa04110")
+```
+![](hsa04110.pathview.png)
+
+Section 3. Gene Ontology (GO)
+We can also do a similar procedure with gene ontology. Similar to above, go.sets.hs has all GO terms. go.subs.hs is a named list containing indexes for the BP, CC, and MF ontologies. Let’s focus on BP (a.k.a Biological Process) here.
+```{r}
+data(go.sets.hs)
+data(go.subs.hs)
+
+# Focus on Biological Process subset of GO
+gobpsets = go.sets.hs[go.subs.hs$BP]
+
+gobpres = gage(foldchanges, gsets=gobpsets, same.dir=TRUE)
+
+lapply(gobpres, head)
+
+```
+```{r}
+pathview(gene.data=foldchanges, pathway.id="GO:0007067")
+```
+
+
+
+
+
