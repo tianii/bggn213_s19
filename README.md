@@ -13,7 +13,7 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 08:[**Machine Learning pt.1**](https://github.com/tianii/bggn213_s19/blob/master/Day08/Day08.md)
 
-- Class 09:[**Unsupervised Learning pt.2**](https://github.com/tianii/bggn213_s19/blob/master/Day09/Day09.md)
+- (*need to edit*) Class 09:[**Unsupervised Learning pt.2**](https://github.com/tianii/bggn213_s19/blob/master/Day09/Day09.md)
 
 - Class 11:[**Structural Bioinformatics**](https://github.com/tianii/bggn213_s19/blob/master/Day11/Day11.md)
 
@@ -21,5 +21,9 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 13:[**Genome Informatics**](https://github.com/tianii/bggn213_s19/blob/master/Day13/Day13.md)
 
-- Class 14:[**Transcriptomics**](
+- Class 14:[**Transcriptomics**](https://github.com/tianii/bggn213_s19/blob/master/Day14.1/Day14.1.md)
+
+- Class 15:[**Genome Annotation**](https://github.com/tianii/bggn213_s19/blob/master/Day15/Day15.md)
+
+-Class 17:[**Network Analysis**](
 
