@@ -19,3 +19,7 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 12:[**Drug Discovery and Design**](https://github.com/tianii/bggn213_s19/blob/master/Day12/Day12.md)
 
+- Class 13:[**Genome Informatics**](https://github.com/tianii/bggn213_s19/blob/master/Day13/Day13.md)
+
+- Class 14:[**Transcriptomics**](
+
