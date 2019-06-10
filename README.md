@@ -1,4 +1,4 @@
-# bggn213_s19
+# Tiani's BGGN 213 Coursework
 
 ~ * **Welcome to my Barry Grant fan page** * ~
 
