@@ -4,7 +4,7 @@
 
 AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn213_S19/) during Spring 2019
 
-(https://www.google.com/search?q=thumbs+up+meme&tbm=isch&tbs=rimg:CfFHUus83UBCIjgd8UZPElotMASBBiSkRxLYN-FT8rIOyMbLT739LVYtufVPgMdM_1R63_1BFPsaKf86VmGl98TfzcuSoSCR3xRk8SWi0wEabsjzrUKNOlKhIJBIEGJKRHEtgRX_1kpt6rz8MAqEgk34VPysg7IxhGb5uFPw7i1fyoSCctPvf0tVi25EcwZ20_1JZ76JKhIJ9U-Ax0z9HrcRVP6zl9-Poq8qEgn8EU-xop_1zpRHlYLeSQqju2SoSCWYaX3xN_1Ny5ER08MVkHKO0L&tbo=u&sa=X&ved=2ahUKEwiCr9yC6N_iAhXlGjQIHTILC1sQ9C96BAgBEBs&biw=1136&bih=562&dpr=1.25#imgrc=8UdS6zzdQELeMM:)
+![caption]:(https://www.google.com/search?q=thumbs+up+meme&tbm=isch&tbs=rimg:CfFHUus83UBCIjgd8UZPElotMASBBiSkRxLYN-FT8rIOyMbLT739LVYtufVPgMdM_1R63_1BFPsaKf86VmGl98TfzcuSoSCR3xRk8SWi0wEabsjzrUKNOlKhIJBIEGJKRHEtgRX_1kpt6rz8MAqEgk34VPysg7IxhGb5uFPw7i1fyoSCctPvf0tVi25EcwZ20_1JZ76JKhIJ9U-Ax0z9HrcRVP6zl9-Poq8qEgn8EU-xop_1zpRHlYLeSQqju2SoSCWYaX3xN_1Ny5ER08MVkHKO0L&tbo=u&sa=X&ved=2ahUKEwiCr9yC6N_iAhXlGjQIHTILC1sQ9C96BAgBEBs&biw=1136&bih=562&dpr=1.25#imgrc=8UdS6zzdQELeMM:)
 
 
 - Class 05:[**R Graphics**](https://github.com/tianii/bggn213_s19/blob/master/class05/Day05.md)
