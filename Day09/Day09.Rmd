@@ -1,25 +1,206 @@
 ---
-title: "Day09"
+title: "Day 09"
 author: "Tiani Louis"
 date: "5/1/2019"
-output: html_document
+output: "github_document"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ```{r}
 wisc.df <- read.csv("WisconsinCancer (1).csv")
+
 # how many have a malignant diagnosis 
 length(grep("M", wisc.df$diagnosis))
-```
-```{r}
-table(wisc.df$diagnosis)
 ```
 ```{r}
 # how many features are suffixed with "_mean"?
 colnames(wisc.df)
 length(grep( "_mean", colnames(wisc.df)))
+```
+
+
+```{r}
+# Convert the features of the data: wisc.data
+wisc.data <- as.matrix(wisc.df[,3:32])
+
+head(wisc.data)
+```
+
+
+```{r}
+# Set the row names of wisc.data
+row.names(wisc.data) <- wisc.df$id
+#head(wisc.data)
+```
+
+```{r}
+# Create diagnosis vector for later 
+diagnosis <- wisc.df$diagnosis
+
+head(diagnosis)
+```
+Principal Component Analysis
+
+```{r}
+# Check column means and standard deviations
+
+head(wisc.data)
+
+colMeans(wisc.data)
+
+apply(wisc.data,2,sd)
+
+
+```
+```{r}
+# Perform PCA on wisc.data by completing the following code
+wisc.pr <- prcomp(wisc.data, scale. = T)
+
+summary(wisc.pr)
+```
+
+
+
+
+
+PCA
+```{r}
+# Check column means and standard deviations
+colMeans(wisc.data)
+
+apply(wisc.data,2,sd)
+```
+```{r}
+biplot(wisc.pr)
+```
+```{r}
+# Scatter plot observations by components 1 and 2
+plot(wisc.pr$x[,1:2], col = diagnosis, 
+     xlab = "PC1", ylab = "PC2")
+```
+
+```{r}
+# Repeat for components 1 and 3
+plot(wisc.pr$x[,1],wisc.pr$x[,3], col = diagnosis, 
+     xlab = "PC1", ylab = "PC3")
+```
+```{r}
+# Calculate variance of each component
+pr.var <- wisc.pr$sdev^2
+head(pr.var)
+```
+Scree Plot
+```{r}
+# Variance explained by each principal component: pve
+pve <- pr.var/sum(pr.var)
+
+# Plot variance explained for each principal component
+plot(pve, xlab = "Principal Component", 
+     ylab = "Proportion of Variance Explained", 
+     ylim = c(0, 1), type = "o")
+```
+```{r}
+# Alternative scree plot of the same data, note data driven y-axis
+barplot(pve, ylab = "Precent of Variance Explained",
+     names.arg=paste0("PC",1:length(pve)), las=2, axes = FALSE)
+#axis(2, at=pve, labels=round(pve,2)*100 )
+```
+```{r}
+library(ggplot2)
+library(factoextra)
+## ggplot based graph
+#install.packages("factoextra")
+
+fviz_eig(wisc.pr, addlabels = TRUE)
+```
+Hierarchical clustering
+```{r}
+data.scaled <- scale(wisc.data, scale = T)
+
+data.dist <- dist(data.scaled, method = "euclidean")
+
+wisc.hclust <- hclust(data.dist, method = "complete")
+
+```
+
+Plot hierarchical clustering 
+
+```{r}
+plot(wisc.hclust)
+abline(h = 19, col="red", lty=2)
+```
+Selecting number of clusters
+```{r}
+wisc.hclust.clusters <- cutree(wisc.hclust, k=4)
+
+
+table(wisc.hclust.clusters, diagnosis)
+```
+
+
+
+OPTIONAL: K-means clustering
+```{r}
+wisc.km <- kmeans(data.scaled, centers= 2, nstart= 20)
+summary(wisc.km)
+table(wisc.km$cluster, diagnosis)
+table(wisc.hclust.clusters, diagnosis)
+```
+Clustering on PCA results
+```{r}
+wisc.pr.hclust <- hclust(dist(wisc.pr$x[,1:7]), method = "ward.D2")
+```
+
+
+```{r}
+grps <- cutree(wisc.pr.hclust, k=2)
+table(grps)
+```
+
+```{r}
+table(grps, diagnosis)
+```
+color by group
+```{r}
+plot(wisc.pr$x[,1:2], col=grps)
+```
+Color by diagnosis
+```{r}
+plot(wisc.pr$x[,1:2], col=diagnosis)
+```
+
+```{r}
+g <- as.factor(grps)
+levels(g)
+
+g <- relevel(g,2)
+levels(g)
+```
+
+```{r}
+plot(wisc.pr$x[,1:2], col=g)
+```
+```{r}
+wisc.pr.hclust.clusters <- cutree(wisc.pr.hclust, k=2)
+
+table(wisc.pr.hclust.clusters, diagnosis)
+```
+
+Prediction
+```{r}
+#url <- "new_samples.csv"
+url <- "https://tinyurl.com/new-samples-CSV"
+new <- read.csv(url)
+npc <- predict(wisc.pr, newdata=new)
+npc
+```
+```{r}
+plot(wisc.pr$x[,1:2], col=g)
+points(npc[,1], npc[,2], col="blue", pch=16, cex=3)
+text(npc[,1], npc[,2], c(1,2), col="white")
 ```
 

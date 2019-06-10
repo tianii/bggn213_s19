@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ## Revisit the PDB 
 
-#**Question 1: Download a CSV file from the PDB site (accessible from “Analyze” -> “PDB Statistics” >
+##**Question 1: Download a CSV file from the PDB site (accessible from “Analyze” -> “PDB Statistics” >
 “by Experimental Method and Molecular Type”. Move this CSV file into your RStudio project
 and determine the percentage of structures solved by X-Ray and Electron Microscopy. Also can
 you determine what proportion of structures are protein? Aim to have a rendered GitHub
@@ -41,7 +41,10 @@ HIV-1 protease structures are in the current PDB?**
 ## 1,157 protease structures 
 
 ```{r}
-pdb <- read.pdb(file = "1hsg.pdb")
+library(bio3d)
+library(bio3d.view)
+library(rgl)
+pdb <- read.pdb(file = "1hsg")
 pdb
 ```
 
@@ -53,8 +56,55 @@ ca.ins <- atom.select(pdb, "calpha")
 
 atom.select(pdb, resno = 10)
 
+pdb$atom[1:2, c("eleno", "elety", "x","y","z")]
+```
+Select protein only and write out a PDB file titled "1HSE_Protein.pdb"
+Select ligand/drug and write out a PDB file titled "1HSE_Ligand.pdb"
+```{r}
+protein <- atom.select(pdb, "protein", value = T)
+protein
+
+ligand <- atom.select(pdb, "ligand", value = T)
+ligand
+
+write.pdb(protein, file = "1HSE_Protein.pdb")
+write.pdb(ligand, file="1HSE_Ligand.pdb")
+```
+
+```{r}
+view(pdb, "overview", col="sse")
 
 ```
 
+```{r}
+view(ligand)
+```
+## Section 6. Working with multiple PDBs 
+```{r}
+ids <- c("1TND_B","1AGR_A","1TAG_A","1GG2_A","1KJY_A","4G5Q_A")
+files <- get.pdb(ids, split = TRUE)
+```
 
+```{r}
+pdbs <- pdbaln(files, fit = T)
+
+```
+
+```{r}
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+
+```
+```{r}
+pc1 <- mktrj(pc.xray, pc=1, file="pc_1.pdb")
+library(bio3d.view)
+# Structural displacements captured by PC1
+view(pc1)
+# The rglwidget() function from the rgl
+# package will show output in your Rmd
+# notebook and rendered html_output
+# documents
+library(rgl)
+#rglwidget(pc1)
+```
 
