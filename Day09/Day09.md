@@ -447,8 +447,8 @@ table(wisc.km$cluster, diagnosis)
 
     ##    diagnosis
     ##       B   M
-    ##   1  14 175
-    ##   2 343  37
+    ##   1 343  37
+    ##   2  14 175
 
 ``` r
 table(wisc.hclust.clusters, diagnosis)
