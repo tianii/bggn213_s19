@@ -4,8 +4,7 @@
 
 AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn213_S19/) during Spring 2019
 
-!(https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjIl7yQ6N_iAhWBFjQIHXczDIUQjRx6BAgBEAU&url=https%3A%2F%2Fknowyourmeme.com%2Fmemes%2Fbrent-rambo&psig=AOvVaw1qHdE_t2wn1AYhhx7HBH0m&ust=1560286971636692)
-
+![caption](https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjIl7yQ6N_iAhWBFjQIHXczDIUQjRx6BAgBEAU&url=https%3A%2F%2Fknowyourmeme.com%2Fmemes%2Fbrent-rambo&psig=AOvVaw1qHdE_t2wn1AYhhx7HBH0m&ust=1560286971636692)
 
 - Class 05:[**R Graphics**](https://github.com/tianii/bggn213_s19/blob/master/class05/Day05.md)
 
