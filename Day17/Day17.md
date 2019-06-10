@@ -45,7 +45,7 @@ createNetworkFromIgraph(g, "myGraph")
     ## Applying preferred layout...
 
     ## networkSUID 
-    ##         136
+    ##        4970
 
 ``` r
 fig <- exportImage(filename="demo", type="png", height=350)
@@ -469,4 +469,4 @@ createNetworkFromDataFrames(genenet.nodes,genenet.edges,
     ## Applying preferred layout...
 
     ## networkSUID 
-    ##         180
+    ##        5014

@@ -37,6 +37,7 @@ setVisualStyle("Marquee")
 ```
 
 
+
 ```{r}
 fig <- exportImage(filename="demo_marquee", type="png", height=350)
 
