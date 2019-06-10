@@ -1,6 +1,6 @@
 # bggn213_s19
 
-*~* **Welcome to my Barry Grant fan page** *~*
+~* **Welcome to my Barry Grant fan page** *~
 
 AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn213_S19/) during Spring 2019
 
@@ -14,7 +14,7 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 08:[**Machine Learning pt.1**](https://github.com/tianii/bggn213_s19/blob/master/Day08/Day08.md)
 
-- (*need to edit*) Class 09:[**Unsupervised Learning pt.2**](https://github.com/tianii/bggn213_s19/blob/master/Day09/Day09.md)
+- Class 09:[**Unsupervised Learning pt.2**](https://github.com/tianii/bggn213_s19/blob/master/Day09/Day09.md)
 
 - Class 11:[**Structural Bioinformatics**](https://github.com/tianii/bggn213_s19/blob/master/Day11/Day11.md)
 
@@ -26,5 +26,7 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 15:[**Genome Annotation**](https://github.com/tianii/bggn213_s19/blob/master/Day15/Day15.md)
 
--Class 17:[**Network Analysis**](
+- Class 17:[**Network Analysis**](https://github.com/tianii/bggn213_s19/blob/master/Day17/Day17.md)
+
+- Class 18:[**Cancer Genomics**](
 
