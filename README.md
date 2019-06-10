@@ -4,7 +4,7 @@
 
 AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn213_S19/) during Spring 2019
 
-![bleh](https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiV4eHV6d_iAhU1IjQIHUAmC8QQjRx6BAgBEAU&url=http%3A%2F%2Fvupicso.pw%2Fthumbs-up-gif-computer.html&psig=AOvVaw3Woa3Z06jFbB3BYgzSdFzE&ust=1560287393201977)
+![bleh](https://static1.fjcdn.com/comments/One+of+the+most+bizarre+uses+of+a+gif+ive+_a3ae7b0f9cfde63d6e7accae807756a4.jpg)
 
 - Class 05:[**R Graphics**](https://github.com/tianii/bggn213_s19/blob/master/class05/Day05.md)
 
