@@ -158,7 +158,7 @@ Q1: Identify sequence regions that contain all 9-mer peptides that are only foun
 ```{r}
 library(bio3d)
 ```
-
+ 
 ```{r}
 seqs <- read.fasta("~/Downloads/lecture18_sequences.fa")
 seqs
