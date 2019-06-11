@@ -41,7 +41,7 @@ head(projects)
 ```
 
 ```{r}
-browseVignettes("GenomicDataCommons")
+#browseVignettes("GenomicDataCommons")
 BiocManager::available("GenomicDataCommons")
 ```
 
