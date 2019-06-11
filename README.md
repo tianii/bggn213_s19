@@ -26,5 +26,5 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 
 - Class 17:[**Network Analysis**](https://github.com/tianii/bggn213_s19/blob/master/Day17/Day17.md)
 
-- Class 18:[**Cancer Genomics**](
+- Class 18:[**Cancer Genomics**](https://github.com/tianii/bggn213_s19/blob/master/Day18/Day18.md)
 
