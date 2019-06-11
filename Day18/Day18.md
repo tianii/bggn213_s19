@@ -1,4 +1,4 @@
-Day18
+Day 18 (part 1 and 2)
 ================
 Tiani Louis
 5/31/2019
@@ -765,4 +765,170 @@ lollipopPlot(vars, gene='TP53')
 
     ## Using longer transcript NM_000546 for now.
 
-![](Day18_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](Day18_files/figure-gfm/unnamed-chunk-18-1.png)<!-- --> \#\#\# PART 2
+Q1: Identify sequence regions that contain all 9-mer peptides that are
+only found in the tumor. Hint: You will need to first identify the sites
+of mutation in the above sequences and then extract the surrounding
+subsequence region. This subsequence should encompass all possible
+9-mers in the tumor derived sequence. In other words extract the
+subsequence from 8 residues before and 8 residues after all point
+mutations in the tumor sequence.
+
+``` r
+library(bio3d)
+```
+
+``` r
+seqs <- read.fasta("~/Downloads/lecture18_sequences.fa")
+seqs
+```
+
+    ##              1        .         .         .         .         .         60 
+    ## P53_wt       MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMDDLMLSPDDIEQWFTEDPGP
+    ## P53_mutant   MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMLDLMLSPDDIEQWFTEDPGP
+    ##              **************************************** ******************* 
+    ##              1        .         .         .         .         .         60 
+    ## 
+    ##             61        .         .         .         .         .         120 
+    ## P53_wt       DEAPRMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAK
+    ## P53_mutant   DEAPWMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAK
+    ##              **** ******************************************************* 
+    ##             61        .         .         .         .         .         120 
+    ## 
+    ##            121        .         .         .         .         .         180 
+    ## P53_wt       SVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHE
+    ## P53_mutant   SVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHE
+    ##              ************************************************************ 
+    ##            121        .         .         .         .         .         180 
+    ## 
+    ##            181        .         .         .         .         .         240 
+    ## P53_wt       RCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNS
+    ## P53_mutant   RCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFVHSVVVPYEPPEVGSDCTTIHYNYMCNS
+    ##              ******************************** *************************** 
+    ##            181        .         .         .         .         .         240 
+    ## 
+    ##            241        .         .         .         .         .         300 
+    ## P53_wt       SCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENLRKKGEPHHELP
+    ## P53_mutant   SCMGGMNRRPILTIITLEV-----------------------------------------
+    ##              ******************                                           
+    ##            241        .         .         .         .         .         300 
+    ## 
+    ##            301        .         .         .         .         .         360 
+    ## P53_wt       PGSTKRALPNNTSSSPQPKKKPLDGEYFTLQIRGRERFEMFRELNEALELKDAQAGKEPG
+    ## P53_mutant   ------------------------------------------------------------
+    ##                                                                           
+    ##            301        .         .         .         .         .         360 
+    ## 
+    ##            361        .         .         .  393 
+    ## P53_wt       GSRAHSSHLKSKKGQSTSRHKKLMFKTEGPDSD
+    ## P53_mutant   ---------------------------------
+    ##                                                
+    ##            361        .         .         .  393 
+    ## 
+    ## Call:
+    ##   read.fasta(file = "~/Downloads/lecture18_sequences.fa")
+    ## 
+    ## Class:
+    ##   fasta
+    ## 
+    ## Alignment dimensions:
+    ##   2 sequence rows; 393 position columns (259 non-gap, 134 gap) 
+    ## 
+    ## + attr: id, ali, call
+
+Create a matrix of positional identity scores
+
+``` r
+pos.id <- conserv(seqs$ali, method = "identity")
+# identify important mutation sites 
+mutant.sites <- which(pos.id < 1) 
+```
+
+exclude gaps
+
+``` r
+gaps <- gap.inspect(seqs)
+mutant.sites <- mutant.sites[mutant.sites %in% gaps$f.inds]
+mutant.sites
+```
+
+    ## [1]  41  65 213 259
+
+We can use these indices in mutant.sites to extract subsequences as
+required for the hands-on session. First however we come up with
+suitable names for these subsequences based on the mutation. This will
+help us later to make sense and keep track of our
+results.
+
+``` r
+# extract information about the mutation type to name the mutations for future use 
+# first extract the wt residue name/position then extract the mutant
+mutant.names <- paste0(seqs$ali["P53_wt",mutant.sites],
+                       mutant.sites,
+                       seqs$ali["P53_mutant",mutant.sites])
+mutant.names
+```
+
+    ## [1] "D41L"  "R65W"  "R213V" "D259V"
+
+Now lets extract all 9-mer mutant encompassing sequences for each mutant
+site. This is equivalent to finding the sequence region eight residues
+before and eight residues after our mutation sites and outputting this
+subsequence to a new FASTA file.
+
+``` r
+start.position <- mutant.sites - 8 
+end.position <- mutant.sites + 8 
+```
+
+``` r
+# Blank matrix to store sub-sequences
+store.seqs <- matrix("-", nrow=length(mutant.sites), ncol=17)
+rownames(store.seqs) <- mutant.names
+```
+
+``` r
+# now creata a for loop to extract the surrounding sequences 
+for (i in 1:length(mutant.sites)) {
+  store.seqs[i,] <- seqs$ali["P53_mutant", start.position[i]:end.position[i]]
+}
+
+store.seqs
+```
+
+    ##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
+    ## D41L  "S"  "P"  "L"  "P"  "S"  "Q"  "A"  "M"  "L"  "D"   "L"   "M"   "L"  
+    ## R65W  "D"  "P"  "G"  "P"  "D"  "E"  "A"  "P"  "W"  "M"   "P"   "E"   "A"  
+    ## R213V "Y"  "L"  "D"  "D"  "R"  "N"  "T"  "F"  "V"  "H"   "S"   "V"   "V"  
+    ## D259V "I"  "L"  "T"  "I"  "I"  "T"  "L"  "E"  "V"  "-"   "-"   "-"   "-"  
+    ##       [,14] [,15] [,16] [,17]
+    ## D41L  "S"   "P"   "D"   "D"  
+    ## R65W  "A"   "P"   "P"   "V"  
+    ## R213V "V"   "P"   "Y"   "E"  
+    ## D259V "-"   "-"   "-"   "-"
+
+Finally lets output all these sequences to a FASTA file for further
+analysis with the IEDB HLA binding prediction website
+<http://tools.iedb.org/mhci/>.
+
+``` r
+## First blank out the gap positions 
+store.seqs[store.seqs == "-"] <- ""
+store.seqs
+```
+
+    ##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
+    ## D41L  "S"  "P"  "L"  "P"  "S"  "Q"  "A"  "M"  "L"  "D"   "L"   "M"   "L"  
+    ## R65W  "D"  "P"  "G"  "P"  "D"  "E"  "A"  "P"  "W"  "M"   "P"   "E"   "A"  
+    ## R213V "Y"  "L"  "D"  "D"  "R"  "N"  "T"  "F"  "V"  "H"   "S"   "V"   "V"  
+    ## D259V "I"  "L"  "T"  "I"  "I"  "T"  "L"  "E"  "V"  ""    ""    ""    ""   
+    ##       [,14] [,15] [,16] [,17]
+    ## D41L  "S"   "P"   "D"   "D"  
+    ## R65W  "A"   "P"   "P"   "V"  
+    ## R213V "V"   "P"   "Y"   "E"  
+    ## D259V ""    ""    ""    ""
+
+``` r
+## Output a FASTA file for further analysis
+write.fasta(seqs=store.seqs, ids=mutant.names, file="subsequences.fa")
+```

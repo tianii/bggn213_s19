@@ -1,8 +1,8 @@
 ---
-title: "Day18"
+title: "Day 18 (part 1 and 2)"
 author: "Tiani Louis"
 date: "5/31/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -152,5 +152,67 @@ lollipopPlot(vars, gene='KRAS')
 ```
 ```{r}
 lollipopPlot(vars, gene='TP53')
+```
+### PART 2
+Q1: Identify sequence regions that contain all 9-mer peptides that are only found in the tumor. Hint: You will need to first identify the sites of mutation in the above sequences and then extract the surrounding subsequence region. This subsequence should encompass all possible 9-mers in the tumor derived sequence. In other words extract the subsequence from 8 residues before and 8 residues after all point mutations in the tumor sequence.
+```{r}
+library(bio3d)
+```
+
+```{r}
+seqs <- read.fasta("~/Downloads/lecture18_sequences.fa")
+seqs
+```
+Create a matrix of positional identity scores 
+
+```{r}
+pos.id <- conserv(seqs$ali, method = "identity")
+# identify important mutation sites 
+mutant.sites <- which(pos.id < 1) 
+```
+exclude gaps 
+```{r}
+gaps <- gap.inspect(seqs)
+mutant.sites <- mutant.sites[mutant.sites %in% gaps$f.inds]
+mutant.sites
+```
+We can use these indices in mutant.sites to extract subsequences as required for the hands-on session. First however we come up with suitable names for these subsequences based on the mutation. This will help us later to make sense and keep track of our results.
+```{r}
+# extract information about the mutation type to name the mutations for future use 
+# first extract the wt residue name/position then extract the mutant
+mutant.names <- paste0(seqs$ali["P53_wt",mutant.sites],
+                       mutant.sites,
+                       seqs$ali["P53_mutant",mutant.sites])
+mutant.names
+```
+Now lets extract all 9-mer mutant encompassing sequences for each mutant site. This is equivalent to finding the sequence region eight residues before and eight residues after our mutation sites and outputting this subsequence to a new FASTA file.
+```{r}
+start.position <- mutant.sites - 8 
+end.position <- mutant.sites + 8 
+
+```
+
+```{r}
+# Blank matrix to store sub-sequences
+store.seqs <- matrix("-", nrow=length(mutant.sites), ncol=17)
+rownames(store.seqs) <- mutant.names
+```
+
+```{r}
+# now creata a for loop to extract the surrounding sequences 
+for (i in 1:length(mutant.sites)) {
+  store.seqs[i,] <- seqs$ali["P53_mutant", start.position[i]:end.position[i]]
+}
+
+store.seqs
+```
+Finally lets output all these sequences to a FASTA file for further analysis with the IEDB HLA binding prediction website http://tools.iedb.org/mhci/.
+```{r}
+## First blank out the gap positions 
+store.seqs[store.seqs == "-"] <- ""
+store.seqs
+
+## Output a FASTA file for further analysis
+write.fasta(seqs=store.seqs, ids=mutant.names, file="subsequences.fa")
 ```
 
