@@ -7,6 +7,7 @@ AKA my coursework from [BGGN-213 at UC San Diego](https://bioboot.github.io/bggn
 - Class 05:[**R Graphics**](https://github.com/tianii/bggn213_s19/blob/master/class05/Day05.md)
 
 - Class 06:[**R Functions**](https://github.com/tianii/bggn213_s19/blob/master/Class06/Class_6_.md)
+  - [**Homework**](https://github.com/tianii/bggn213_s19/blob/master/Homework%20/HW_TianiLouis_042519.md)
 
 - Class 07:[**R Packages**](https://github.com/tianii/bggn213_s19/blob/master/Day07/Day07_Worksheet.md)
 
